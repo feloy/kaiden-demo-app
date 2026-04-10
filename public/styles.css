@@ -1,0 +1,221 @@
+/* Kaiden design tokens */
+:root {
+  --bg: #1a1b23;
+  --surface: #252631;
+  --border: #3d3e4f;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --dim: #6b7280;
+  --accent: #8b5cf6;
+  --accent-hover: #7c3aed;
+  --accent-soft: rgba(139, 92, 246, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar {
+  height: 36px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.content {
+  flex: 1;
+  padding: 32px 40px 48px;
+  overflow-y: auto;
+}
+
+.content::-webkit-scrollbar {
+  width: 6px;
+}
+.content::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.2);
+  border-radius: 3px;
+}
+
+.greeting h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.greeting h1 span {
+  background: linear-gradient(135deg, var(--accent), #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.greeting p {
+  font-size: 14px;
+  color: var(--dim);
+  max-width: 520px;
+  line-height: 1.5;
+}
+
+.panel {
+  margin-top: 28px;
+  max-width: 560px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.panel h2 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background: #374151;
+  border: 1px solid #4b5563;
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  margin-bottom: 14px;
+  font-family: inherit;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--accent);
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+button[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button[type="submit"]:hover {
+  background: var(--accent-hover);
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.status {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--dim);
+}
+
+.status.error {
+  color: #f87171;
+}
+
+.list {
+  margin-top: 28px;
+  max-width: 560px;
+}
+
+.list h2 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+
+ul.requests {
+  list-style: none;
+}
+
+ul.requests li {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+ul.requests li strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+ul.requests li .meta {
+  font-size: 12px;
+  color: var(--dim);
+  margin-bottom: 6px;
+}
+
+ul.requests li .detail {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.empty {
+  font-size: 14px;
+  color: var(--dim);
+  padding: 16px 0;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kaiden Demo</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <div class="main">
+        <header class="topbar">Kaiden · Demo</header>
+        <main class="content">
+          <div class="greeting">
+            <h1>Hello, <span>Kaiden</span></h1>
+            <p>
+              Minimal Kaiden demo. Submit a feature request; it is stored in Redis and listed
+              below.
+            </p>
+          </div>
+
+          <section class="panel" aria-labelledby="form-heading">
+            <h2 id="form-heading">New request</h2>
+            <form id="request-form">
+              <label for="title">Title</label>
+              <input
+                id="title"
+                name="title"
+                type="text"
+                required
+                maxlength="500"
+                placeholder="Short summary"
+                autocomplete="off"
+              />
+              <label for="detail">Details <span style="color: var(--dim)">(optional)</span></label>
+              <textarea id="detail" name="detail" maxlength="2000" placeholder="Context or use case"></textarea>
+              <button type="submit" id="submit-btn">Submit</button>
+              <p class="status" id="form-status" hidden></p>
+            </form>
+          </section>
+
+          <section class="list" aria-labelledby="list-heading">
+            <h2 id="list-heading">Recent requests</h2>
+            <p class="empty" id="loading">Loading…</p>
+            <ul class="requests" id="request-list" hidden></ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script>
+      const form = document.getElementById("request-form");
+      const listEl = document.getElementById("request-list");
+      const loadingEl = document.getElementById("loading");
+      const statusEl = document.getElementById("form-status");
+      const submitBtn = document.getElementById("submit-btn");
+
+      function fmtDate(iso) {
+        try {
+          const d = new Date(iso);
+          return d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+        } catch {
+          return iso;
+        }
+      }
+
+      async function loadRequests() {
+        loadingEl.hidden = false;
+        listEl.hidden = true;
+        try {
+          const res = await fetch("/api/feature-requests");
+          if (!res.ok) throw new Error("Failed to load");
+          const items = await res.json();
+          loadingEl.hidden = true;
+          listEl.innerHTML = "";
+          if (!items.length) {
+            loadingEl.textContent = "No requests yet.";
+            loadingEl.hidden = false;
+            return;
+          }
+          loadingEl.hidden = true;
+          listEl.hidden = false;
+          for (const r of items) {
+            const li = document.createElement("li");
+            li.innerHTML =
+              "<strong></strong><div class=\"meta\"></div>" +
+              (r.detail ? "<div class=\"detail\"></div>" : "");
+            li.querySelector("strong").textContent = r.title;
+            li.querySelector(".meta").textContent = fmtDate(r.createdAt);
+            if (r.detail) li.querySelector(".detail").textContent = r.detail;
+            listEl.appendChild(li);
+          }
+        } catch {
+          loadingEl.textContent = "Could not load requests (is Redis running?).";
+          loadingEl.hidden = false;
+        }
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        statusEl.hidden = true;
+        submitBtn.disabled = true;
+        const title = document.getElementById("title").value.trim();
+        const detail = document.getElementById("detail").value.trim();
+        try {
+          const res = await fetch("/api/feature-requests", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, detail }),
+          });
+          const body = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            statusEl.textContent = body.error || "Request failed";
+            statusEl.className = "status error";
+            statusEl.hidden = false;
+            return;
+          }
+          form.reset();
+          await loadRequests();
+        } catch {
+          statusEl.textContent = "Network error";
+          statusEl.className = "status error";
+          statusEl.hidden = false;
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+
+      loadRequests();
+    </script>
+  </body>
+</html>
