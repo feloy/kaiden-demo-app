@@ -43,5 +43,4 @@ commands:
         isDefault: true
 events:
   postStart:
-    - install
     - opencode-install
