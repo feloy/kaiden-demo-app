@@ -1,0 +1,46 @@
+schemaVersion: 2.3.0
+metadata:
+  name: kaiden-demo-app
+  displayName: Kaiden Demo App
+  description: Express feature-request demo backed by Redis
+  tags:
+    - kaiden
+    - opencode
+    - Express
+    - redis
+attributes:
+  controller.devfile.io/storage-type: ephemeral
+components:
+  - name: tools
+    container:
+      image: quay.io/devfile/universal-developer-image:ubi10-latest
+      mountSources: true
+      memoryLimit: 4G
+commands:
+  - id: install
+    exec:
+      component: tools
+      commandLine: npm ci
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: build
+        isDefault: true
+  - id: start
+    exec:
+      component: tools
+      commandLine: npm start
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: run
+        isDefault: true
+  - id: opencode-install
+    exec:
+      component: tools
+      commandLine: npm i -g opencode-ai
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: run
+        isDefault: true
+events:
+  postStart:
+    - opencode-install
