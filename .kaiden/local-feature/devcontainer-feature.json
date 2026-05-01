@@ -1,5 +1,8 @@
 {
     "id": "local-feature",
     "version": "0.1.0",
-    "name": "Local Feature for Kaiden Demo App"
+    "name": "Local Feature for Kaiden Demo App",
+    "installsAfter": [
+        "ghcr.io/devcontainers/features/common-utils"
+    ]
 }

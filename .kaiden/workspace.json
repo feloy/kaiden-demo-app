@@ -12,7 +12,21 @@
         "name": "playwright",
         "command": "npx",
         "args": ["-y", "@playwright/mcp@latest"]
+      },
+      {
+        "name": "openshift",
+        "command": "npx",
+        "args": ["-y", "kubernetes-mcp-server@latest"]
       }
     ]
-  }
+  }, 
+  "mounts": [
+    {
+      "host": "$HOME/.kube/config",
+      "target": "$HOME/.kube/config"
+    }
+  ],
+  "skills": [
+    "$HOME/Documents/SKILLS/work-with-container-images"
+  ]
 }

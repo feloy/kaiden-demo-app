@@ -1,5 +1,11 @@
 #! /bin/sh
 
+# Install buildah and dependencies
+dnf install -y buildah fuse-overlayfs
+
+# Install kubernetes client
+dnf install -y kubectl
+
 # Install redis service
 dnf install -y redis
 
